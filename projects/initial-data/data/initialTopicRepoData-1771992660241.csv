@@ -1,0 +1,11 @@
+repo,repo_topics,date_first_commit,creation,date_first_release
+fastapi/fastapi,"python, json, swagger-ui, redoc, starlette, openapi, api, openapi3, framework, async, asyncio, uvicorn, python3, python-types, pydantic, json-schema, fastapi, swagger, rest, web",1543993010000,1544257307000,1544896765000
+fastapi/full-stack-fastapi-template,"python, json, json-schema, docker, postgresql, frontend, backend, fastapi, traefik, letsencrypt, swagger, jwt, openapi, chakra-ui, react, tanstack-query, tanstack-router, typescript, sqlmodel",1549726956000,1550934514000,1552297741000
+pydantic/pydantic,"validation, parsing, json-schema, pydantic, python39, python, hints, python310, python311, python312, python313",1493846621000,1493846638000,1494082138000
+fastapi/sqlmodel,"python, sql, sqlalchemy, pydantic, fastapi, json, json-schema",1629808913000,1629815213000,1629829555000
+rjsf-team/react-jsonschema-form,"react, json-schema, forms, ui, web, json, data-validation",1450278974000,1450278845000,1450371513000
+ajv-validator/ajv,"json-schema, validator, ajv",1432077812000,1432077812000,1434196865000
+alibaba/formily,"react, json-schema, form, validator, observable, reactive, schema-form, fusion, ant-design, vue, vue3, designable, react-native, json-schema-form, low-code, no-code, react-form, vue-form, form-builder",1550715373000,1546999905000,1556265000000
+alibaba/x-render,"javascript, react, ant-design, json-schema, formrender, widget, webpack, ant, typescript, table, chart, list, form",1569484707000,1569484706000,1571190033000
+joelittlejohn/jsonschema2pojo,"java, json-schema, json, jackson, gson, maven-plugin, gradle-plugin",1291982675000,1371940133000,1341268929000
+microsoft/typespec,"openapi3, json-schema, protobuf, typespec",1595961043000,1625095789000,1709595317000
