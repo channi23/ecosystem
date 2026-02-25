@@ -1,5 +1,4 @@
 const fs = require("fs");
-cconst fs = require("fs");
 const https = require("https");
 
 const CSV_PATH = "./projects/weekly-stats-collection/weekly_stats.csv";
