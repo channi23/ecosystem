@@ -30,7 +30,29 @@ async function run() {
   const count = await fetchRepoCount();
   const date = new Date().toISOString().split("T")[0];
 
+  // read existing CSV
+  let csv = "";
+  if (fs.existsSync(CSV_PATH)) {
+    csv = fs.readFileSync(CSV_PATH, "utf-8");
+  }
+
+  // split lines and check if today's date already exists
+  const lines = csv.split("\n").filter(Boolean);
+
+  const alreadyExists = lines.some(line => line.startsWith(date));
+
+  if (alreadyExists) {
+    console.log("Entry for today already exists. Skipping.");
+    return;
+  }
+
   const line = `${date},${count}\n`;
+
+  // if file is empty, add header first
+  if (lines.length === 0) {
+    fs.appendFileSync(CSV_PATH, "date,repo_count\n");
+  }
+
   fs.appendFileSync(CSV_PATH, line);
 }
 
