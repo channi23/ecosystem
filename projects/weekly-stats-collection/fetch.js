@@ -16,19 +16,15 @@ function fetchStats() {
       (res) => {
         let data = "";
 
-        res.on("data", (chunk) => (data += chunk));
+        res.on("data", chunk => (data += chunk));
         res.on("end", () => {
-          try {
-            const json = JSON.parse(data);
+          const json = JSON.parse(data);
 
-            resolve({
-              total: json.total_count,
-              topRepo: json.items[0]?.full_name || "",
-              topStars: json.items[0]?.stargazers_count || 0,
-            });
-          } catch (err) {
-            reject(err);
-          }
+          resolve({
+            total: json.total_count,
+            topRepo: json.items[0].full_name,
+            topStars: json.items[0].stargazers_count
+          });
         });
       }
     ).on("error", reject);
@@ -39,7 +35,6 @@ async function run() {
   const stats = await fetchStats();
   const date = new Date().toISOString().split("T")[0];
 
-  // read existing CSV
   let csv = "";
   if (fs.existsSync(CSV_PATH)) {
     csv = fs.readFileSync(CSV_PATH, "utf-8");
@@ -47,28 +42,29 @@ async function run() {
 
   const lines = csv.split("\n").filter(Boolean);
 
-  // check duplicate date
-  const alreadyExists = lines.some((line) => line.startsWith(date));
-
+  // Prevent duplicate entry for same day
+  const alreadyExists = lines.some(line => line.startsWith(date));
   if (alreadyExists) {
     console.log("Entry for today already exists. Skipping.");
     return;
   }
 
-  // find last week's count for delta calculation
-  let lastCount = null;
+  // Default values (for first entry edge case)
+  let weeklyChange = 0;
+  let newRepos = 0;
+
+  // If we already have at least 1 data row (excluding header)
   if (lines.length > 1) {
-    const lastRow = lines[lines.length - 1].split(",");
-    lastCount = parseInt(lastRow[1], 10);
+    const lastLine = lines[lines.length - 1];
+    const parts = lastLine.split(",");
+
+    const prevCount = parseInt(parts[1], 10);
+
+    weeklyChange = stats.total - prevCount;
+    newRepos = weeklyChange; // same metric for now
   }
 
-  const weeklyChange = lastCount !== null ? stats.total - lastCount : 0;
-  const newRepos = weeklyChange; // simple assumption
-
-  // prepare line
-  const line = `${date},${stats.total},${weeklyChange},${newRepos},${stats.topRepo},${stats.topStars}\n`;
-
-  // add header if empty
+  // Add header if file empty
   if (lines.length === 0) {
     fs.appendFileSync(
       CSV_PATH,
@@ -76,9 +72,11 @@ async function run() {
     );
   }
 
+  const line = `${date},${stats.total},${weeklyChange},${newRepos},${stats.topRepo},${stats.topStars}\n`;
+
   fs.appendFileSync(CSV_PATH, line);
 
-  console.log("Added new weekly stats entry:", line.trim());
+  console.log("Added new stats row:", line);
 }
 
 run();
